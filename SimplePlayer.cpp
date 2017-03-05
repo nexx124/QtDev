@@ -75,6 +75,7 @@ void SimplePlayer::openLocal()
 
     //_media = new VlcMedia(file, true, _instance);
     QString url = "rtsp://192.168.1.117/ch1";
+    //QString
     _media = new VlcMedia(url, _instance);
     _player->open(_media);
     _player->play();
