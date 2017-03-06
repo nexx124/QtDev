@@ -5,7 +5,7 @@
 
 #include <QFileDialog>
 #include <QInputDialog>
-
+#include <QtNetwork/QTcpSocket>
 #include <VLCQtCore/Common.h>
 #include <VLCQtCore/Instance.h>
 #include <VLCQtCore/Media.h>
@@ -85,6 +85,14 @@ void SimplePlayer::openUrl()
 
 void SimplePlayer::on_start_streaming_button_clicked()
 {
+    QString file =
+            QFileDialog::getOpenFileName(this, tr("Open file"),
+                                         QDir::homePath(),
+                                         tr("Multimedia files(*)"));
+
+    if (file.isEmpty())
+        return;
+
     _streamingMedia = new VlcMedia(file, true, _instance);
     _streamingMedia->setOption(":sout=#transcode{vcodec=h264,vb=0,scale=0,acodec=mpga,ab=128,channels=2,samplerate=44100}"
                                ":rtp{dst=192.168.1.33,port=4444,sdp=rtsp://192.168.1.33:4444/ch1,mux=ts,ttl=1}");
@@ -92,10 +100,8 @@ void SimplePlayer::on_start_streaming_button_clicked()
     _streamingPlayer->open(_streamingMedia);
     _streamingPlayer->play();
 
-//    //_media = new VlcMedia(file, true, _instance);
-//    QString url = "rtsp://192.168.1.117/ch1";
-//    //QString
-//    _media = new VlcMedia(url, _instance);
-//    _player->open(_media);
-//    _player->play();
+    QTcpSocket *sock = new QTcpSocket();
+    sock->connectToHost("192.168.1.40", 8080);
+    QString mes = "Hello!";
+    sock->write(mes.toStdString().c_str());
 }
