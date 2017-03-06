@@ -29,6 +29,8 @@ private slots:
     void openLocal();
     void openUrl();
 
+    void on_start_streaming_button_clicked();
+
 private:
     Ui::SimplePlayer *ui;
 

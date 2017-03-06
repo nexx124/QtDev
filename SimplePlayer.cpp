@@ -65,21 +65,9 @@ void SimplePlayer::openLocal()
 
     if (file.isEmpty())
         return;
-
-    _streamingMedia = new VlcMedia(file, true, _instance);
-    _streamingMedia->setOption(":sout=#transcode{vcodec=h264,vb=0,scale=0,acodec=mpga,ab=128,channels=2,samplerate=44100}"
-                               ":rtp{dst=192.168.1.117,port=1234,sdp=rtsp://192.168.1.117/ch1,mux=ts,ttl=1}");
-
-    _streamingPlayer->open(_streamingMedia);
-    _streamingPlayer->play();
-
-    //_media = new VlcMedia(file, true, _instance);
-    QString url = "rtsp://192.168.1.117/ch1";
-    //QString
-    _media = new VlcMedia(url, _instance);
+    _media = new VlcMedia(file, true, _instance);
     _player->open(_media);
     _player->play();
-
 }
 
 void SimplePlayer::openUrl()
@@ -93,4 +81,21 @@ void SimplePlayer::openUrl()
     _media = new VlcMedia(url, _instance);
 
     _player->open(_media);
+}
+
+void SimplePlayer::on_start_streaming_button_clicked()
+{
+    _streamingMedia = new VlcMedia(file, true, _instance);
+    _streamingMedia->setOption(":sout=#transcode{vcodec=h264,vb=0,scale=0,acodec=mpga,ab=128,channels=2,samplerate=44100}"
+                               ":rtp{dst=192.168.1.33,port=4444,sdp=rtsp://192.168.1.33:4444/ch1,mux=ts,ttl=1}");
+
+    _streamingPlayer->open(_streamingMedia);
+    _streamingPlayer->play();
+
+//    //_media = new VlcMedia(file, true, _instance);
+//    QString url = "rtsp://192.168.1.117/ch1";
+//    //QString
+//    _media = new VlcMedia(url, _instance);
+//    _player->open(_media);
+//    _player->play();
 }
