@@ -5,11 +5,11 @@
 
 #include <QFileDialog>
 #include <QInputDialog>
-#include <QtNetwork/QTcpSocket>
 #include <VLCQtCore/Common.h>
 #include <VLCQtCore/Instance.h>
 #include <VLCQtCore/Media.h>
 #include <VLCQtCore/MediaPlayer.h>
+#include <QMessageBox>
 
 #include "EqualizerDialog.h"
 
@@ -94,14 +94,32 @@ void SimplePlayer::on_start_streaming_button_clicked()
         return;
 
     _streamingMedia = new VlcMedia(file, true, _instance);
-    _streamingMedia->setOption(":sout=#transcode{vcodec=h264,vb=0,scale=0,acodec=mpga,ab=128,channels=2,samplerate=44100}"
-                               ":rtp{dst=192.168.1.33,port=4444,sdp=rtsp://192.168.1.33:4444/ch1,mux=ts,ttl=1}");
+    _streamingMedia->setOption(":sout=#transcode{vcodec=h264,acodec=mpga,ab=128,channels=2,samplerate=44100}"
+                               ":rtp{dst=192.168.1.117,port=4444,sdp=rtsp://192.168.1.117:4444/ch1,mux=ts,ttl=1}");
 
     _streamingPlayer->open(_streamingMedia);
     _streamingPlayer->play();
 
-    QTcpSocket *sock = new QTcpSocket();
-    sock->connectToHost("192.168.1.40", 8080);
-    QString mes = "Hello!";
+}
+
+void SimplePlayer::readData()
+{
+    QString reply = QString::fromUtf8(sock->readAll().toStdString().c_str());
+    if (!reply.isEmpty())
+        QMessageBox().information(this, tr("Reply from host"), reply);
+}
+
+void SimplePlayer::on_connect_to_ver_button_clicked()
+{
+    QString url =
+            QInputDialog::getText(this, tr("Connect to host"), tr("Enter the address you want to connect"));
+
+    if (url.isEmpty())
+        return;
+
+    sock = new QTcpSocket();
+    sock->connectToHost(url, 8080);
+    QString mes = "rtsp://192.168.1.117:4444/ch1";
     sock->write(mes.toStdString().c_str());
+    connect(sock, SIGNAL(readyRead()), this, SLOT(readData()));
 }

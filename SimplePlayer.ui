@@ -15,6 +15,29 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
+    <item row="5" column="0" colspan="4">
+     <widget class="VlcWidgetVolumeSlider" name="volume" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0" colspan="4">
+     <widget class="VlcWidgetSeek" name="seek" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="4">
+     <widget class="VlcWidgetVideo" name="video" native="true"/>
+    </item>
     <item row="0" column="0">
      <widget class="QPushButton" name="openLocal">
       <property name="text">
@@ -32,17 +55,10 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
+    <item row="0" column="3">
      <widget class="QPushButton" name="openUrl">
       <property name="text">
        <string>Open URL</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QPushButton" name="stop">
-      <property name="text">
-       <string>Stop</string>
       </property>
      </widget>
     </item>
@@ -53,26 +69,10 @@
       </property>
      </widget>
     </item>
-    <item row="6" column="0" colspan="3">
-     <widget class="VlcWidgetSeek" name="seek" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" colspan="3">
-     <widget class="VlcWidgetVideo" name="video" native="true"/>
-    </item>
-    <item row="5" column="0" colspan="3">
-     <widget class="VlcWidgetVolumeSlider" name="volume" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+    <item row="3" column="3">
+     <widget class="QPushButton" name="stop">
+      <property name="text">
+       <string>Stop</string>
       </property>
      </widget>
     </item>
@@ -80,6 +80,13 @@
      <widget class="QPushButton" name="start_streaming_button">
       <property name="text">
        <string>Start streaming</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="connect_to_ver_button">
+      <property name="text">
+       <string>Connect to VR</string>
       </property>
      </widget>
     </item>

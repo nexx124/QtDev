@@ -7,6 +7,7 @@
 #define SIMPLEPLAYER_H_
 
 #include <QMainWindow>
+#include <QtNetwork/QTcpSocket>
 
 namespace Ui {
     class SimplePlayer;
@@ -31,6 +32,9 @@ private slots:
 
     void on_start_streaming_button_clicked();
 
+    void on_connect_to_ver_button_clicked();
+    void readData();
+
 private:
     Ui::SimplePlayer *ui;
 
@@ -41,6 +45,8 @@ private:
     VlcMediaPlayer *_streamingPlayer;
 
     EqualizerDialog *_equalizerDialog;
+
+    QTcpSocket *sock;
 };
 
 #endif // SIMPLEPLAYER_H_
