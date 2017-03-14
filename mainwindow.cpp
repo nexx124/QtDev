@@ -12,10 +12,11 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::createPlayer()
 {
     if (mediaPlayer != NULL) {
-        mediaPlayer->close();
         delete mediaPlayer;
     }
-    mediaPlayer = new SimplePlayer();
+    mediaPlayer = new VideoPlayer();
+    mediaPlayer->setupUI(ui);
+    mediaPlayer->createSettings();
 }
 
 MainWindow::~MainWindow()
@@ -25,8 +26,60 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_enter_button_clicked()
 {
-    if (ui->options_comboBox->currentIndex() == 0)
-        createPlayer();
-    if (mediaPlayer != NULL)
-        mediaPlayer->show();
+    if (ui->options_comboBox->currentIndex() == 0) {
+        if ( mediaPlayer == NULL) {
+            createPlayer();
+        }
+        ui->Player_StackedWidget->setCurrentWidget(ui->streamingPlayer);
+    }
+}
+
+void MainWindow::on_openLocal_clicked()
+{
+    mediaPlayer->openLocal();
+}
+
+void MainWindow::on_start_streaming_button_clicked()
+{
+    mediaPlayer->on_start_streaming_button_clicked();
+}
+
+void MainWindow::on_stop_streaming_button_clicked()
+{
+    mediaPlayer->on_stop_streaming_button_clicked();
+}
+
+void MainWindow::on_connect_to_ver_button_clicked()
+{
+    mediaPlayer->on_connect_to_ver_button_clicked();
+}
+
+void MainWindow::on_openUrl_clicked()
+{
+    mediaPlayer->openUrl();
+}
+
+void MainWindow::on_pause_clicked()
+{
+    mediaPlayer->pauseVideo();
+    ui->pause->setChecked(true);
+}
+
+void MainWindow::on_stop_clicked()
+{
+    mediaPlayer->stopVideoPlayer();
+    ui->pause->setChecked(false);
+    ui->pause->setEnabled(false);
+    ui->start_continue_button->setEnabled(true);
+    ui->stop->setEnabled(false);
+}
+
+void MainWindow::on_start_continue_button_clicked()
+{
+    mediaPlayer->startVideo();
+    ui->pause->setEnabled(true);
+    ui->pause->setChecked(false);
+    ui->stop->setEnabled(true);
+    ui->start_continue_button->setChecked(false);
+    ui->start_continue_button->setEnabled(false);
 }

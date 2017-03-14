@@ -15,16 +15,12 @@ QT += widgets core network
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    EqualizerDialog.cpp \
-    SimplePlayer.cpp
+    videoplayer.cpp
 
 HEADERS  += mainwindow.h \
-    EqualizerDialog.h \
-    SimplePlayer.h
+    videoplayer.h
 
-FORMS    += mainwindow.ui \
-    EqualizerDialog.ui \
-    SimplePlayer.ui
+FORMS    += mainwindow.ui
 
 LIBS       += -lVLCQtCore -lVLCQtWidgets
 

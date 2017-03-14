@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "SimplePlayer.h"
+#include "videoplayer.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,9 +21,25 @@ public:
 private slots:
     void on_enter_button_clicked();
 
+    void on_openLocal_clicked();
+
+    void on_start_streaming_button_clicked();
+
+    void on_stop_streaming_button_clicked();
+
+    void on_connect_to_ver_button_clicked();
+
+    void on_openUrl_clicked();
+
+    void on_pause_clicked();
+
+    void on_stop_clicked();
+
+    void on_start_continue_button_clicked();
+
 private:
     Ui::MainWindow *ui;
-    SimplePlayer *mediaPlayer;
+    VideoPlayer *mediaPlayer;
 };
 
 #endif // MAINWINDOW_H
