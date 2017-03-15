@@ -5,7 +5,6 @@
 #include <VLCQtCore/Media.h>
 #include <VLCQtCore/MediaPlayer.h>
 #include <QMessageBox>
-
 #include "videoplayer.h"
 #include "ui_mainwindow.h"
 
@@ -14,7 +13,8 @@ VideoPlayer::VideoPlayer(QWidget *parent)
       parent_ui(new Ui::MainWindow),
       _media(NULL), _streamingMedia(NULL),
       _instance(NULL), _player(NULL),
-      _streamingPlayer(NULL), sock(NULL)
+      _streamingPlayer(NULL), sock(NULL), codec(""),
+      file("")
 {
 
 }
@@ -54,12 +54,14 @@ void VideoPlayer::createSettings() {
     parent_ui->pause->setEnabled(false);
     parent_ui->start_streaming_button->setEnabled(false);
     parent_ui->stop_stream_to_vr->setEnabled(false);
+    parent_ui->comboBox_coding->setEnabled(false);
+
+    codec = "#transcode{vcodec=h264,acodec=mpga,ab=128,channels=2,samplerate=44100}";
 }
 
 void VideoPlayer::openLocal()
 {
-    QString file =
-            QFileDialog::getOpenFileName(this, tr("Open file"),
+    file = QFileDialog::getOpenFileName(this, tr("Open file"),
                                          QDir::homePath(),
                                          tr("Multimedia files(*)"));
 
@@ -93,28 +95,30 @@ void VideoPlayer::on_start_streaming_button_clicked()
 
     _streamingMedia = new VlcMedia(_media->core());
 
-    _streamingMedia->setOption(":sout=#transcode{vcodec=h264,acodec=mpga,ab=128,channels=2,samplerate=44100}"
-                               ":http{mux=ffmpeg{mux=flv},dst=:8088/ch1}");
+    QString options = ":sout=" + codec + ":http{mux=ffmpeg{mux=flv},dst=:8088/ch1}";
+    _streamingMedia->setOption(options);
 
-    _streamingPlayer->open(_streamingMedia);
     _streamingPlayer->setPosition(_player->position());
-    _streamingPlayer->play();
-
+    _streamingPlayer->open(_streamingMedia);
 
     parent_ui->connect_to_ver_button->setEnabled(true);
     parent_ui->stop_streaming_button->setEnabled(true);
     parent_ui->start_streaming_button->setEnabled(false);
+    parent_ui->comboBox_coding->setEnabled(false);
+    parent_ui->checkBox__enable_coding->setEnabled(false);
 
 }
 
 void VideoPlayer::on_stop_streaming_button_clicked()
 {
-    if (_streamingPlayer != NULL) {
-
         _streamingPlayer->stop();
+
+        this->stop_streaming_to_VR();
+
         parent_ui->stop_streaming_button->setEnabled(false);
         parent_ui->start_streaming_button->setEnabled(true);
-    }
+        parent_ui->checkBox__enable_coding->setEnabled(true);
+        parent_ui->checkBox__enable_coding->setChecked(false);
 }
 
 void VideoPlayer::stop_streaming_to_VR() {
@@ -202,4 +206,36 @@ void VideoPlayer::send_to_server() {
     sock->write(command.toStdString().c_str());
     sock->waitForBytesWritten(1000);
     sock->waitForReadyRead(3000);
+}
+
+void VideoPlayer::setCodec(int index) {
+    switch (index) {
+        case 0:
+            codec = "#transcode{vcodec=h264,acodec=mpga,ab=128,channels=2,samplerate=44100}";
+        break;
+        case 1:
+            codec = "#transcode{vcodec=h264,vb=800,acodec=mpga,ab=128,channels=2,samplerate=44100}";
+        break;
+        case 2:
+            codec = "#transcode{vcodec=hevc,acodec=mpga,ab=128,channels=2,samplerate=44100}";
+        break;
+        case 3:
+            codec = "#transcode{vcodec=mp2v,vb=800,acodec=mpga,ab=128,channels=2,samplerate=44100}";
+        break;
+        case 4:
+            codec = "#transcode{vcodec=none,acodec=mp3,ab=128,channels=2,samplerate=44100}";
+        break;
+        case 5:
+            codec = "#transcode{vcodec=h264,vb=2000,venc=x264{profile=baseline},width=1280,height=720,acodec=mp3,ab=192,channels=2,samplerate=44100}";
+        break;
+        default:
+            codec = "#transcode{vcodec=h264,acodec=mpga,ab=128,channels=2,samplerate=44100}";
+    }
+}
+
+void VideoPlayer::enableCoding(int arg) {
+    if (arg)
+        parent_ui->comboBox_coding->setEnabled(true);
+    else
+        parent_ui->comboBox_coding->setEnabled(false);
 }

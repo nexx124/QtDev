@@ -41,6 +41,10 @@ private slots:
 
     void on_send_to_server_clicked();
 
+    void on_comboBox_currentIndexChanged(int index);
+
+    void on_checkBox__enable_coding_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
     VideoPlayer *mediaPlayer;

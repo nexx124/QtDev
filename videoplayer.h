@@ -22,6 +22,8 @@ public:
 
     void setupUI(Ui::MainWindow *ui) {parent_ui = ui;}
     void createSettings();
+    void setCodec(int);
+    void enableCoding(int);
 
 public slots:
     void openLocal();
@@ -57,6 +59,9 @@ private:
     VlcMediaPlayer *_streamingPlayer;
 
     QTcpSocket *sock;
+
+    QString codec;
+    QString file;
 };
 
 
