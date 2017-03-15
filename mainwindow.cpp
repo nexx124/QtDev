@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     mediaPlayer = NULL;
     ui->setupUi(this);
+    ui->Player_StackedWidget->setCurrentIndex(0);
 }
 
 void MainWindow::createPlayer()
@@ -82,4 +83,14 @@ void MainWindow::on_start_continue_button_clicked()
     ui->stop->setEnabled(true);
     ui->start_continue_button->setChecked(false);
     ui->start_continue_button->setEnabled(false);
+}
+
+void MainWindow::on_stop_stream_to_vr_clicked()
+{
+    mediaPlayer->stop_streaming_to_VR();
+}
+
+void MainWindow::on_send_to_server_clicked()
+{
+    mediaPlayer->send_to_server();
 }

@@ -37,6 +37,10 @@ private slots:
 
     void on_start_continue_button_clicked();
 
+    void on_stop_stream_to_vr_clicked();
+
+    void on_send_to_server_clicked();
+
 private:
     Ui::MainWindow *ui;
     VideoPlayer *mediaPlayer;

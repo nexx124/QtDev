@@ -42,6 +42,10 @@ public slots:
 
     void startVideo();
 
+    void stop_streaming_to_VR();
+
+    void send_to_server();
+
 private:
 
     Ui::MainWindow *parent_ui;

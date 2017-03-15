@@ -12,8 +12,9 @@
 VideoPlayer::VideoPlayer(QWidget *parent)
     : QWidget(parent),
       parent_ui(new Ui::MainWindow),
-      _media(0), _streamingMedia(0),
-      _instance(0), _player(0), _streamingPlayer(0)
+      _media(NULL), _streamingMedia(NULL),
+      _instance(NULL), _player(NULL),
+      _streamingPlayer(NULL), sock(NULL)
 {
 
 }
@@ -51,6 +52,8 @@ void VideoPlayer::createSettings() {
     parent_ui->stop->setEnabled(false);
     parent_ui->start_continue_button->setEnabled(false);
     parent_ui->pause->setEnabled(false);
+    parent_ui->start_streaming_button->setEnabled(false);
+    parent_ui->stop_stream_to_vr->setEnabled(false);
 }
 
 void VideoPlayer::openLocal()
@@ -64,10 +67,11 @@ void VideoPlayer::openLocal()
         return;
     _media = new VlcMedia(file, true, _instance);
     _player->open(_media);
-    _player->play();
+
     parent_ui->start_continue_button->setEnabled(false);
     parent_ui->pause->setEnabled(true);
     parent_ui->stop->setEnabled(true);
+    parent_ui->start_streaming_button->setEnabled(true);
 
 }
 
@@ -86,31 +90,51 @@ void VideoPlayer::openUrl()
 
 void VideoPlayer::on_start_streaming_button_clicked()
 {
-    QString file =
-            QFileDialog::getOpenFileName(this, tr("Open file"),
-                                         QDir::homePath(),
-                                         tr("Multimedia files(*)"));
 
-    if (file.isEmpty())
-        return;
+    _streamingMedia = new VlcMedia(_media->core());
 
-    _streamingMedia = new VlcMedia(file, true, _instance);
-    _streamingMedia->setOption(":sout=#transcode{vcodec=h264,vb=800,acodec=mpga,ab=128,channels=2,samplerate=44100}"
-                               ":rtp{dst=192.168.1.117,port=4444,sdp=rtsp://192.168.1.117:4444/ch1,mux=ts,ttl=1}");
+    _streamingMedia->setOption(":sout=#transcode{vcodec=h264,acodec=mpga,ab=128,channels=2,samplerate=44100}"
+                               ":http{mux=ffmpeg{mux=flv},dst=:8088/ch1}");
 
     _streamingPlayer->open(_streamingMedia);
+    _streamingPlayer->setPosition(_player->position());
     _streamingPlayer->play();
+
 
     parent_ui->connect_to_ver_button->setEnabled(true);
     parent_ui->stop_streaming_button->setEnabled(true);
+    parent_ui->start_streaming_button->setEnabled(false);
 
+}
+
+void VideoPlayer::on_stop_streaming_button_clicked()
+{
+    if (_streamingPlayer != NULL) {
+
+        _streamingPlayer->stop();
+        parent_ui->stop_streaming_button->setEnabled(false);
+        parent_ui->start_streaming_button->setEnabled(true);
+    }
+}
+
+void VideoPlayer::stop_streaming_to_VR() {
+    if (sock != NULL) {
+        QString mes = "@@stop";
+        sock->write(mes.toStdString().c_str());
+        sock->waitForBytesWritten(1000);
+        sock->waitForReadyRead(3000);
+    }
+    parent_ui->stop_stream_to_vr->setEnabled(false);
+    parent_ui->connect_to_ver_button->setEnabled(true);
 }
 
 void VideoPlayer::readData()
 {
     QString reply = QString::fromUtf8(sock->readAll().toStdString().c_str());
-    if (!reply.isEmpty())
+    if (reply != "")
         QMessageBox().information(this, tr("Reply from host"), reply);
+    else
+        QMessageBox().information(this, tr("Reply from host"), "Host is unreacheable. Try again");
 }
 
 void VideoPlayer::on_connect_to_ver_button_clicked()
@@ -127,33 +151,55 @@ void VideoPlayer::on_connect_to_ver_button_clicked()
     }
     sock = new QTcpSocket();
     sock->connectToHost(url, 8080);
-        QString mes = "rtsp://192.168.1.117:4444/ch1";
-        sock->write(mes.toStdString().c_str());
-        connect(sock, SIGNAL(readyRead()), this, SLOT(readData()));
-}
+    QString mes = "http://192.168.1.117:8088/ch1";
 
-void VideoPlayer::on_stop_streaming_button_clicked()
-{
-    if (_streamingPlayer != NULL) {
-        _streamingPlayer->stop();
-        parent_ui->stop_streaming_button->setEnabled(false);
+    parent_ui->stop_stream_to_vr->setEnabled(true);
+    parent_ui->connect_to_ver_button->setEnabled(false);
+
+    if(sock->waitForConnected(3000)) {
+      sock->write(mes.toStdString().c_str());
+      sock->waitForBytesWritten(1000);
+      sock->waitForReadyRead(3000);
     }
+    connect(sock, SIGNAL(readyRead()), this, SLOT(readData()));
 }
 
 void VideoPlayer::pauseVideo() {
     if (_player == NULL)
         return;
     _player->pause();
+    parent_ui->pause->setEnabled(false);
+    parent_ui->start_continue_button->setEnabled(true);
 }
 
 void VideoPlayer::stopVideoPlayer() {
     if (_player == NULL)
         return;
     _player->stop();
+    parent_ui->start_continue_button->setEnabled(true);
+    parent_ui->pause->setEnabled(false);
 }
 
 void VideoPlayer::startVideo() {
     if (_player == NULL)
         return;
     _player->play();
+    parent_ui->start_continue_button->setEnabled(false);
+    parent_ui->pause->setEnabled(true);
+    parent_ui->stop->setEnabled(true);
+}
+
+void VideoPlayer::send_to_server() {
+    QString command =
+            QInputDialog::getText(this, tr("Command to host"), tr("Enter the command"));
+
+    if (command.isEmpty())
+        return;
+
+    if (sock == NULL)
+        return;
+
+    sock->write(command.toStdString().c_str());
+    sock->waitForBytesWritten(1000);
+    sock->waitForReadyRead(3000);
 }
