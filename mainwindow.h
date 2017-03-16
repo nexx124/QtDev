@@ -45,6 +45,8 @@ private slots:
 
     void on_comboBox_coding_currentIndexChanged(int index);
 
+    void on_pause_streaming_button_clicked();
+
 private:
     Ui::MainWindow *ui;
     VideoPlayer *mediaPlayer;

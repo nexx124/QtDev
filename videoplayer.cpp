@@ -256,3 +256,12 @@ void VideoPlayer::enableCoding(int arg) {
     else
         parent_ui->comboBox_coding->setEnabled(false);
 }
+
+void VideoPlayer::pause_streaming() {
+    if (_streamingPlayer->state() == Vlc::Playing) {
+        _streamingPlayer->pause();
+    }
+    if (_streamingPlayer->state() == Vlc::Paused) {
+        _streamingPlayer->play();
+    }
+}

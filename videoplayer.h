@@ -48,6 +48,8 @@ public slots:
 
     void send_to_server();
 
+    void pause_streaming();
+
 private:
 
     Ui::MainWindow *parent_ui;

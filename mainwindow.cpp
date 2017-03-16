@@ -104,3 +104,8 @@ void MainWindow::on_comboBox_coding_currentIndexChanged(int index)
 {
     mediaPlayer->setCodec(index);
 }
+
+void MainWindow::on_pause_streaming_button_clicked()
+{
+    mediaPlayer->pause_streaming();
+}
