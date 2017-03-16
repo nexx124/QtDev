@@ -56,13 +56,13 @@ void VideoPlayer::createSettings() {
     parent_ui->stop_stream_to_vr->setEnabled(false);
     parent_ui->comboBox_coding->setEnabled(false);
 
-    codec = "#transcode{vcodec=h264,acodec=mpga,ab=128,channels=2,samplerate=44100}";
+    codec = "#transcode{vcodec=h264,vb=2000,venc=x264{profile=baseline},width=1280,height=720,acodec=mp3,ab=192,channels=2,samplerate=44100}";
 }
 
 void VideoPlayer::openLocal()
 {
     file = QFileDialog::getOpenFileName(this, tr("Open file"),
-                                         QDir::homePath(),
+                                         QDir::currentPath(),
                                          tr("Multimedia files(*)"));
 
     if (file.isEmpty())

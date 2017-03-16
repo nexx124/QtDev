@@ -95,12 +95,12 @@ void MainWindow::on_send_to_server_clicked()
     mediaPlayer->send_to_server();
 }
 
-void MainWindow::on_comboBox_currentIndexChanged(int index)
-{
-    mediaPlayer->setCodec(index);
-}
-
 void MainWindow::on_checkBox__enable_coding_stateChanged(int arg1)
 {
     mediaPlayer->enableCoding(arg1);
+}
+
+void MainWindow::on_comboBox_coding_currentIndexChanged(int index)
+{
+    mediaPlayer->setCodec(index);
 }
