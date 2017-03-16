@@ -27,6 +27,9 @@ VideoPlayer::~VideoPlayer()
     delete _streamingMedia;
     delete _instance;
     delete parent_ui;
+
+    sock->disconnect();
+    delete sock;
 }
 
 void VideoPlayer::createSettings() {
@@ -55,6 +58,9 @@ void VideoPlayer::createSettings() {
     parent_ui->start_streaming_button->setEnabled(false);
     parent_ui->stop_stream_to_vr->setEnabled(false);
     parent_ui->comboBox_coding->setEnabled(false);
+
+    sock = new QTcpSocket();
+    connect(sock, SIGNAL(readyRead()), this, SLOT(readData()));
 
     codec = "#transcode{vcodec=h264,vb=2000,venc=x264{profile=baseline},width=1280,height=720,acodec=mp3,ab=192,channels=2,samplerate=44100}";
 }
@@ -113,7 +119,8 @@ void VideoPlayer::on_stop_streaming_button_clicked()
 {
         _streamingPlayer->stop();
 
-        this->stop_streaming_to_VR();
+        if (parent_ui->stop_stream_to_vr->isEnabled())
+            this->stop_streaming_to_VR();
 
         parent_ui->stop_streaming_button->setEnabled(false);
         parent_ui->start_streaming_button->setEnabled(true);
@@ -122,11 +129,11 @@ void VideoPlayer::on_stop_streaming_button_clicked()
 }
 
 void VideoPlayer::stop_streaming_to_VR() {
-    if (sock != NULL) {
+    if (sock->isOpen()) {
         QString mes = "@@stop";
         sock->write(mes.toStdString().c_str());
         sock->waitForBytesWritten(1000);
-        sock->waitForReadyRead(3000);
+        sock->waitForReadyRead(1000);
     }
     parent_ui->stop_stream_to_vr->setEnabled(false);
     parent_ui->connect_to_ver_button->setEnabled(true);
@@ -149,23 +156,33 @@ void VideoPlayer::on_connect_to_ver_button_clicked()
     if (url.isEmpty())
         return;
 
-    if (!_streamingMedia) {
+    if (!_streamingMedia || _streamingPlayer->state() == Vlc::Stopped) {
         QMessageBox().warning(this, tr("Warning!"),"Stream is not set. Set it first.");
         return;
     }
-    sock = new QTcpSocket();
-    sock->connectToHost(url, 8080);
+
     QString mes = "http://192.168.1.117:8088/ch1";
 
+    if (!sock->isOpen()) {
+
+        sock->connectToHost(url, 8080);
+
+        if(sock->waitForConnected(2000)) {
+          sock->write(mes.toStdString().c_str());
+          sock->waitForBytesWritten(1000);
+          sock->waitForReadyRead(1000);
+        }
+    } else {
+        sock->connectToHost(url, 8080);
+
+        if(sock->waitForConnected(2000)) {
+          sock->write(mes.toStdString().c_str());
+          sock->waitForBytesWritten(1000);
+          sock->waitForReadyRead(3000);
+        }
+    }
     parent_ui->stop_stream_to_vr->setEnabled(true);
     parent_ui->connect_to_ver_button->setEnabled(false);
-
-    if(sock->waitForConnected(3000)) {
-      sock->write(mes.toStdString().c_str());
-      sock->waitForBytesWritten(1000);
-      sock->waitForReadyRead(3000);
-    }
-    connect(sock, SIGNAL(readyRead()), this, SLOT(readData()));
 }
 
 void VideoPlayer::pauseVideo() {
