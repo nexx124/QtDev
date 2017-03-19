@@ -50,6 +50,8 @@ public slots:
 
     void pause_streaming();
 
+    void show_hide_stream_stateChanged(int arg1);
+
 private:
 
     Ui::MainWindow *parent_ui;

@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>817</width>
-    <height>625</height>
+    <width>755</width>
+    <height>765</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>VR Video Player</string>
@@ -67,46 +73,33 @@
       </widget>
       <widget class="QWidget" name="streamingPlayer">
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="6" column="5">
-         <widget class="QPushButton" name="stop_streaming_button">
-          <property name="maximumSize">
-           <size>
-            <width>90</width>
-            <height>23</height>
-           </size>
+        <item row="4" column="1">
+         <widget class="VlcWidgetVolumeSlider" name="volume" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-          <property name="text">
-           <string>Stop streaming</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="4">
-         <widget class="QPushButton" name="stop">
-          <property name="minimumSize">
-           <size>
-            <width>79</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Stop</string>
+          <property name="autoFillBackground">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="4" column="5">
-         <widget class="QPushButton" name="start_streaming_button">
-          <property name="maximumSize">
-           <size>
-            <width>90</width>
-            <height>23</height>
-           </size>
+        <item row="6" column="1">
+         <widget class="VlcWidgetSeek" name="seek" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-          <property name="text">
-           <string>Start streaming</string>
+          <property name="autoFillBackground">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
+        <item row="5" column="2">
          <widget class="QPushButton" name="connect_to_ver_button">
           <property name="maximumSize">
            <size>
@@ -119,7 +112,101 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
+        <item row="3" column="3">
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="4" column="4">
+         <widget class="QCheckBox" name="checkBox__enable_coding">
+          <property name="text">
+           <string>Включить перекодирование</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="QPushButton" name="stop_stream_to_vr">
+          <property name="maximumSize">
+           <size>
+            <width>105</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Stop stream to VR</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="5">
+         <widget class="QPushButton" name="pause_streaming_button">
+          <property name="maximumSize">
+           <size>
+            <width>90</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Pause streaming</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2">
+         <widget class="QPushButton" name="send_to_server">
+          <property name="minimumSize">
+           <size>
+            <width>97</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>82</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Send to server</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="5">
+         <widget class="QPushButton" name="stop_streaming_button">
+          <property name="maximumSize">
+           <size>
+            <width>90</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Stop streaming</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="3" column="2">
          <widget class="QPushButton" name="start_continue_button">
           <property name="minimumSize">
            <size>
@@ -135,7 +222,33 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="4">
+        <item row="3" column="4">
+         <widget class="QPushButton" name="stop">
+          <property name="minimumSize">
+           <size>
+            <width>79</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Stop</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="5">
+         <widget class="QPushButton" name="start_streaming_button">
+          <property name="maximumSize">
+           <size>
+            <width>90</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Start streaming</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="4">
          <widget class="QComboBox" name="comboBox_coding">
           <property name="maximumSize">
            <size>
@@ -181,33 +294,17 @@
           </item>
          </widget>
         </item>
-        <item row="2" column="1">
-         <spacer name="horizontalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+        <item row="3" column="5">
+         <widget class="QCheckBox" name="checkBox_show_hide_stream">
+          <property name="text">
+           <string>Показать/скрыть трансляцию</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
+          <property name="checked">
+           <bool>true</bool>
           </property>
-         </spacer>
+         </widget>
         </item>
-        <item row="2" column="3">
-         <spacer name="horizontalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QPushButton" name="pause">
           <property name="minimumSize">
            <size>
@@ -223,24 +320,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="4">
-         <widget class="QCheckBox" name="checkBox__enable_coding">
-          <property name="text">
-           <string>Включить перекодирование</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="VlcWidgetVolumeSlider" name="volume" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" colspan="4">
+        <item row="0" column="3">
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <widget class="QPushButton" name="openLocal">
@@ -270,73 +350,28 @@
           </item>
          </layout>
         </item>
-        <item row="8" column="1">
-         <widget class="VlcWidgetSeek" name="seek" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="6">
+        <item row="2" column="0" colspan="6">
          <widget class="VlcWidgetVideo" name="videoSurface" native="true">
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>350</height>
+            <height>500</height>
            </size>
           </property>
          </widget>
         </item>
-        <item row="5" column="5">
-         <widget class="QPushButton" name="pause_streaming_button">
-          <property name="maximumSize">
+        <item row="1" column="3">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
            <size>
-            <width>90</width>
-            <height>23</height>
+            <width>20</width>
+            <height>40</height>
            </size>
           </property>
-          <property name="text">
-           <string>Pause streaming</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="QPushButton" name="stop_stream_to_vr">
-          <property name="maximumSize">
-           <size>
-            <width>105</width>
-            <height>23</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Stop stream to VR</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="QPushButton" name="send_to_server">
-          <property name="minimumSize">
-           <size>
-            <width>97</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>82</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Send to server</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-         </widget>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -349,7 +384,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>817</width>
+     <width>755</width>
      <height>21</height>
     </rect>
    </property>

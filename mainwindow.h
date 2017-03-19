@@ -47,6 +47,8 @@ private slots:
 
     void on_pause_streaming_button_clicked();
 
+    void on_checkBox_show_hide_stream_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
     VideoPlayer *mediaPlayer;

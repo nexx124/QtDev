@@ -58,6 +58,7 @@ void VideoPlayer::createSettings() {
     parent_ui->start_streaming_button->setEnabled(false);
     parent_ui->stop_stream_to_vr->setEnabled(false);
     parent_ui->comboBox_coding->setEnabled(false);
+    parent_ui->pause_streaming_button->setEnabled(false);
 
     sock = new QTcpSocket();
     connect(sock, SIGNAL(readyRead()), this, SLOT(readData()));
@@ -112,20 +113,22 @@ void VideoPlayer::on_start_streaming_button_clicked()
     parent_ui->start_streaming_button->setEnabled(false);
     parent_ui->comboBox_coding->setEnabled(false);
     parent_ui->checkBox__enable_coding->setEnabled(false);
+    parent_ui->pause_streaming_button->setEnabled(true);
 
 }
 
 void VideoPlayer::on_stop_streaming_button_clicked()
 {
-        _streamingPlayer->stop();
+     _streamingPlayer->stop();
 
-        if (parent_ui->stop_stream_to_vr->isEnabled())
-            this->stop_streaming_to_VR();
+     if (parent_ui->stop_stream_to_vr->isEnabled())
+         this->stop_streaming_to_VR();
 
-        parent_ui->stop_streaming_button->setEnabled(false);
-        parent_ui->start_streaming_button->setEnabled(true);
-        parent_ui->checkBox__enable_coding->setEnabled(true);
-        parent_ui->checkBox__enable_coding->setChecked(false);
+     parent_ui->stop_streaming_button->setEnabled(false);
+     parent_ui->start_streaming_button->setEnabled(true);
+     parent_ui->checkBox__enable_coding->setEnabled(true);
+     parent_ui->checkBox__enable_coding->setChecked(false);
+     parent_ui->pause_streaming_button->setEnabled(false);
 }
 
 void VideoPlayer::stop_streaming_to_VR() {
@@ -222,7 +225,7 @@ void VideoPlayer::send_to_server() {
 
     sock->write(command.toStdString().c_str());
     sock->waitForBytesWritten(1000);
-    sock->waitForReadyRead(3000);
+    sock->waitForReadyRead(2000);
 }
 
 void VideoPlayer::setCodec(int index) {
@@ -263,5 +266,21 @@ void VideoPlayer::pause_streaming() {
     }
     if (_streamingPlayer->state() == Vlc::Paused) {
         _streamingPlayer->play();
+    }
+
+    if (sock == NULL)
+        return;
+    QString command = "@@pause_stream";
+    sock->write(command.toStdString().c_str());
+    sock->waitForBytesWritten(1000);
+    sock->waitForReadyRead(2000);
+}
+
+void VideoPlayer::show_hide_stream_stateChanged(int arg1)
+{
+    if (arg1) {
+        parent_ui->videoSurface->setVisible(true);
+    } else {
+        parent_ui->videoSurface->setVisible(false);
     }
 }

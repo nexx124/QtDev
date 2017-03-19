@@ -109,3 +109,9 @@ void MainWindow::on_pause_streaming_button_clicked()
 {
     mediaPlayer->pause_streaming();
 }
+
+void MainWindow::on_checkBox_show_hide_stream_stateChanged(int arg1) {
+
+    mediaPlayer->show_hide_stream_stateChanged(arg1);
+
+}
