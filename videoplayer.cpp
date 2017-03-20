@@ -284,3 +284,24 @@ void VideoPlayer::show_hide_stream_stateChanged(int arg1)
         parent_ui->videoSurface->setVisible(false);
     }
 }
+
+void VideoPlayer::on_camera_show_button_clicked()
+{
+    _media = new VlcMedia("dshow://", _instance);
+    _player->open(_media);
+    _player->play();
+
+    _streamingMedia = new VlcMedia(_media->core());
+
+    codec = "#transcode{vcodec=h264,vb=2000,venc=x264{profile=baseline},width=1280,height=720,acodec=mp3,ab=192,channels=2,samplerate=44100}";
+    QString options = ":sout=" + codec + ":http{mux=ffmpeg{mux=flv},dst=:8088/ch1}";
+    _streamingMedia->setOption(options);
+    _streamingPlayer->open(_streamingMedia);
+
+    parent_ui->connect_to_ver_button->setEnabled(true);
+//    parent_ui->stop_streaming_button->setEnabled(true);
+//    parent_ui->start_streaming_button->setEnabled(false);
+//    parent_ui->comboBox_coding->setEnabled(false);
+//    parent_ui->checkBox__enable_coding->setEnabled(false);
+//    parent_ui->pause_streaming_button->setEnabled(true);
+}

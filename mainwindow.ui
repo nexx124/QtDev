@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>755</width>
+    <width>977</width>
     <height>765</height>
    </rect>
   </property>
@@ -373,6 +373,19 @@
           </property>
          </spacer>
         </item>
+        <item row="5" column="3">
+         <widget class="QPushButton" name="camera_show_button">
+          <property name="maximumSize">
+           <size>
+            <width>105</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Show cam</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </widget>
@@ -384,7 +397,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>755</width>
+     <width>977</width>
      <height>21</height>
     </rect>
    </property>

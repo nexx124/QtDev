@@ -52,6 +52,10 @@ public slots:
 
     void show_hide_stream_stateChanged(int arg1);
 
+    void on_camera_show_button_clicked();
+
+private slots:
+
 private:
 
     Ui::MainWindow *parent_ui;

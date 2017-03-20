@@ -115,3 +115,9 @@ void MainWindow::on_checkBox_show_hide_stream_stateChanged(int arg1) {
     mediaPlayer->show_hide_stream_stateChanged(arg1);
 
 }
+
+void MainWindow::on_camera_show_button_clicked() {
+
+    mediaPlayer->on_camera_show_button_clicked();
+
+}

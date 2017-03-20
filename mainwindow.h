@@ -49,6 +49,8 @@ private slots:
 
     void on_checkBox_show_hide_stream_stateChanged(int arg1);
 
+    void on_camera_show_button_clicked();
+
 private:
     Ui::MainWindow *ui;
     VideoPlayer *mediaPlayer;
