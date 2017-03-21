@@ -50,6 +50,7 @@ void VideoPlayer::createSettings() {
     parent_ui->volume->setMediaPlayer(_player);
     parent_ui->volume->setVolume(50);
     parent_ui->seek->setMediaPlayer(_player);
+    parent_ui->streaming_seek->setMediaPlayer(_streamingPlayer);
 
     parent_ui->stop_streaming_button->setEnabled(false);
     parent_ui->stop->setEnabled(false);
