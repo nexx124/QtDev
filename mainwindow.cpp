@@ -20,6 +20,15 @@ void MainWindow::createPlayer()
     mediaPlayer->createSettings();
 }
 
+void MainWindow::createPlayerWeb() {
+    if (mediaPlayer != NULL) {
+        delete mediaPlayer;
+    }
+    mediaPlayer = new VideoPlayer();
+    mediaPlayer->setupUI(ui);
+    mediaPlayer->createSettingsWeb();
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -32,6 +41,12 @@ void MainWindow::on_enter_button_clicked()
             createPlayer();
         }
         ui->Player_StackedWidget->setCurrentWidget(ui->streamingPlayer);
+    }
+    if (ui->options_comboBox->currentIndex() == 1) {
+        if ( mediaPlayer == NULL) {
+            createPlayerWeb();
+        }
+        ui->Player_StackedWidget->setCurrentWidget(ui->web_streaming);
     }
 }
 
@@ -113,11 +128,59 @@ void MainWindow::on_pause_streaming_button_clicked()
 void MainWindow::on_checkBox_show_hide_stream_stateChanged(int arg1) {
 
     mediaPlayer->show_hide_stream_stateChanged(arg1);
-
 }
 
 void MainWindow::on_camera_show_button_clicked() {
 
     mediaPlayer->on_camera_show_button_clicked();
+}
 
+void MainWindow::on_checkBox_show_hide_stream_web_stateChanged(int arg1)
+{
+    mediaPlayer->show_hide_stream_web_stateChanged(arg1);
+}
+
+void MainWindow::on_comboBox_coding_web_currentIndexChanged(int index)
+{
+    mediaPlayer->setCodec(index);
+}
+
+void MainWindow::on_camera_show_button_web_clicked()
+{
+    mediaPlayer->on_camera_show_button_clicked();
+}
+
+void MainWindow::on_start_streaming_button_web_clicked()
+{
+    mediaPlayer->on_start_streaming_button_clicked_web();
+}
+
+void MainWindow::on_pause_streaming_button_web_clicked()
+{
+    mediaPlayer->pause_streaming();
+}
+
+void MainWindow::on_stop_streaming_button_web_clicked()
+{
+    mediaPlayer->on_stop_streaming_button_clicked();
+}
+
+void MainWindow::on_connect_to_ver_button_web_clicked()
+{
+    mediaPlayer->on_connect_to_ver_button_clicked();
+}
+
+void MainWindow::on_stop_stream_to_vr_web_clicked()
+{
+    mediaPlayer->stop_streaming_to_VR();
+}
+
+void MainWindow::on_send_to_server_web_clicked()
+{
+    mediaPlayer->send_to_server();
+}
+
+void MainWindow::on_checkBox__enable_coding_web_stateChanged(int arg1)
+{
+    mediaPlayer->enableCoding(arg1);
 }

@@ -17,6 +17,7 @@ public:
     ~MainWindow();
 
     void createPlayer();
+    void createPlayerWeb();
 
 private slots:
     void on_enter_button_clicked();
@@ -50,6 +51,26 @@ private slots:
     void on_checkBox_show_hide_stream_stateChanged(int arg1);
 
     void on_camera_show_button_clicked();
+
+    void on_checkBox_show_hide_stream_web_stateChanged(int arg1);
+
+    void on_comboBox_coding_web_currentIndexChanged(int index);
+
+    void on_camera_show_button_web_clicked();
+
+    void on_start_streaming_button_web_clicked();
+
+    void on_pause_streaming_button_web_clicked();
+
+    void on_stop_streaming_button_web_clicked();
+
+    void on_connect_to_ver_button_web_clicked();
+
+    void on_stop_stream_to_vr_web_clicked();
+
+    void on_send_to_server_web_clicked();
+
+    void on_checkBox__enable_coding_web_stateChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;

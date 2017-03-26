@@ -24,7 +24,7 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="Player_StackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="page">
        <widget class="QPushButton" name="enter_button">
@@ -363,19 +363,6 @@
           </item>
          </layout>
         </item>
-        <item row="5" column="3">
-         <widget class="QPushButton" name="camera_show_button">
-          <property name="maximumSize">
-           <size>
-            <width>105</width>
-            <height>23</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Show cam</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0" colspan="6">
          <widget class="VlcWidgetVideo" name="videoSurface" native="true">
           <property name="minimumSize">
@@ -388,6 +375,196 @@
         </item>
         <item row="6" column="4">
          <widget class="VlcWidgetSeek" name="streaming_seek" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="autoFillBackground">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="web_streaming">
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0" colspan="4">
+         <widget class="VlcWidgetVideo" name="videoSurface_web" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>500</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QCheckBox" name="checkBox_show_hide_stream_web">
+          <property name="text">
+           <string>Показать/скрыть трансляцию</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QCheckBox" name="checkBox__enable_coding_web">
+          <property name="text">
+           <string>Включить перекодирование</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QPushButton" name="connect_to_ver_button_web">
+          <property name="maximumSize">
+           <size>
+            <width>105</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Start stream to VR</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QPushButton" name="camera_show_button_web">
+          <property name="maximumSize">
+           <size>
+            <width>105</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Show cam</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QComboBox" name="comboBox_coding_web">
+          <property name="maximumSize">
+           <size>
+            <width>180</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="currentIndex">
+           <number>5</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Video - H.264 + MP3(MP4)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Video - H.264 + MP3(TS)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Video - H.265 + MP3(MP4)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Video - MPEG-2 + MPGA</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Audio - MP3</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Video for Android HD</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QPushButton" name="start_streaming_button_web">
+          <property name="maximumSize">
+           <size>
+            <width>90</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Start streaming</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QPushButton" name="stop_stream_to_vr_web">
+          <property name="maximumSize">
+           <size>
+            <width>105</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Stop stream to VR</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="3">
+         <widget class="QPushButton" name="pause_streaming_button_web">
+          <property name="maximumSize">
+           <size>
+            <width>90</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Pause streaming</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QPushButton" name="send_to_server_web">
+          <property name="minimumSize">
+           <size>
+            <width>97</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>82</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Send to server</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="3">
+         <widget class="QPushButton" name="stop_streaming_button_web">
+          <property name="maximumSize">
+           <size>
+            <width>90</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Stop streaming</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="VlcWidgetSeek" name="streaming_seek_web" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
             <horstretch>0</horstretch>

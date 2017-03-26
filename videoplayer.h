@@ -24,6 +24,7 @@ public:
     void createSettings();
     void setCodec(int);
     void enableCoding(int);
+    void createSettingsWeb();
 
 public slots:
     void openLocal();
@@ -31,6 +32,8 @@ public slots:
     void openUrl();
 
     void on_start_streaming_button_clicked();
+
+    void on_start_streaming_button_clicked_web();
 
     void on_connect_to_ver_button_clicked();
 
@@ -53,6 +56,8 @@ public slots:
     void show_hide_stream_stateChanged(int arg1);
 
     void on_camera_show_button_clicked();
+
+    void show_hide_stream_web_stateChanged(int arg1);
 
 private slots:
 

@@ -67,6 +67,35 @@ void VideoPlayer::createSettings() {
     codec = "#transcode{vcodec=h264,vb=2000,venc=x264{profile=baseline},width=1280,height=720,acodec=mp3,ab=192,channels=2,samplerate=44100}";
 }
 
+void VideoPlayer::createSettingsWeb() {
+    if (_instance != NULL)
+        delete _instance;
+    if (_player != NULL)
+        delete _player;
+    if (_streamingPlayer != NULL)
+        delete _streamingPlayer;
+
+    _instance = new VlcInstance(VlcCommon::args(), this);
+    _player = new VlcMediaPlayer(_instance);
+    _streamingPlayer = new VlcMediaPlayer(_instance);
+
+    _player->setVideoWidget(parent_ui->videoSurface_web);
+
+    parent_ui->videoSurface_web->setMediaPlayer(_player);
+
+    parent_ui->stop_streaming_button_web->setEnabled(false);
+    parent_ui->start_streaming_button_web->setEnabled(true);
+    parent_ui->stop_stream_to_vr_web->setEnabled(false);
+    parent_ui->comboBox_coding_web->setEnabled(false);
+    parent_ui->pause_streaming_button_web->setEnabled(false);
+    parent_ui->streaming_seek_web->setMediaPlayer(_streamingPlayer);
+
+    sock = new QTcpSocket();
+    connect(sock, SIGNAL(readyRead()), this, SLOT(readData()));
+
+    codec = "#transcode{vcodec=h264,acodec=mpga,ab=128,channels=2,samplerate=44100}";
+}
+
 void VideoPlayer::openLocal()
 {
     file = QFileDialog::getOpenFileName(this, tr("Open file"),
@@ -118,12 +147,44 @@ void VideoPlayer::on_start_streaming_button_clicked()
 
 }
 
+void VideoPlayer::on_start_streaming_button_clicked_web() {
+
+    //VlcInstance *_instanceWeb = new VlcInstance(VlcCommon::args(), this);
+    //_streamingMedia = new VlcMedia("dshow://", _instance);
+
+    _streamingMedia = new VlcMedia("dshow://", _instance);
+    QString options = ":sout=" + codec + ":http{mux=ffmpeg{mux=flv},dst=:8088/ch1}";
+    _streamingMedia->setOption(options);
+
+    _streamingPlayer->open(_streamingMedia);
+    _streamingPlayer->play();
+
+    parent_ui->connect_to_ver_button_web->setEnabled(true);
+    parent_ui->stop_streaming_button_web->setEnabled(true);
+    parent_ui->start_streaming_button_web->setEnabled(false);
+    parent_ui->comboBox_coding_web->setEnabled(false);
+    parent_ui->checkBox__enable_coding_web->setEnabled(false);
+    parent_ui->pause_streaming_button_web->setEnabled(true);
+}
+
 void VideoPlayer::on_stop_streaming_button_clicked()
 {
      _streamingPlayer->stop();
 
-     if (parent_ui->stop_stream_to_vr->isEnabled())
-         this->stop_streaming_to_VR();
+    if (parent_ui->Player_StackedWidget->currentWidget() == parent_ui->web_streaming) {
+        if (parent_ui->stop_stream_to_vr_web->isEnabled())
+            this->stop_streaming_to_VR();
+
+        parent_ui->stop_streaming_button_web->setEnabled(false);
+        parent_ui->start_streaming_button_web->setEnabled(true);
+        parent_ui->checkBox__enable_coding_web->setEnabled(true);
+        parent_ui->checkBox__enable_coding_web->setChecked(false);
+        parent_ui->pause_streaming_button_web->setEnabled(false);
+        return;
+
+    }
+    if (parent_ui->stop_stream_to_vr->isEnabled())
+        this->stop_streaming_to_VR();
 
      parent_ui->stop_streaming_button->setEnabled(false);
      parent_ui->start_streaming_button->setEnabled(true);
@@ -138,6 +199,11 @@ void VideoPlayer::stop_streaming_to_VR() {
         sock->write(mes.toStdString().c_str());
         sock->waitForBytesWritten(1000);
         sock->waitForReadyRead(1000);
+    }
+    if (parent_ui->Player_StackedWidget->currentWidget() == parent_ui->web_streaming) {
+        parent_ui->stop_stream_to_vr_web->setEnabled(false);
+        parent_ui->connect_to_ver_button_web->setEnabled(true);
+        return;
     }
     parent_ui->stop_stream_to_vr->setEnabled(false);
     parent_ui->connect_to_ver_button->setEnabled(true);
@@ -184,6 +250,11 @@ void VideoPlayer::on_connect_to_ver_button_clicked()
           sock->waitForBytesWritten(1000);
           sock->waitForReadyRead(3000);
         }
+    }
+    if (parent_ui->Player_StackedWidget->currentWidget() == parent_ui->web_streaming) {
+        parent_ui->stop_stream_to_vr_web->setEnabled(true);
+        parent_ui->connect_to_ver_button_web->setEnabled(false);
+        return;
     }
     parent_ui->stop_stream_to_vr->setEnabled(true);
     parent_ui->connect_to_ver_button->setEnabled(false);
@@ -255,6 +326,12 @@ void VideoPlayer::setCodec(int index) {
 }
 
 void VideoPlayer::enableCoding(int arg) {
+    if (parent_ui->Player_StackedWidget->currentWidget() == parent_ui->web_streaming) {
+        if (arg)
+            parent_ui->comboBox_coding_web->setEnabled(true);
+        else
+            parent_ui->comboBox_coding_web->setEnabled(false);
+    }
     if (arg)
         parent_ui->comboBox_coding->setEnabled(true);
     else
@@ -286,23 +363,31 @@ void VideoPlayer::show_hide_stream_stateChanged(int arg1)
     }
 }
 
+void VideoPlayer::show_hide_stream_web_stateChanged(int arg1) {
+    if (arg1) {
+        parent_ui->videoSurface_web->setVisible(true);
+    } else {
+        parent_ui->videoSurface_web->setVisible(false);
+    }
+}
+
 void VideoPlayer::on_camera_show_button_clicked()
 {
-    _media = new VlcMedia("dshow://", _instance);
+//    _streamingMedia = new VlcMedia("screen://", _instance);
+
+//    QString options = ":sout=" + codec + ":http{mux=ffmpeg{mux=flv},dst=:8088/ch1}";
+//    _streamingMedia->setOption(options);
+
+//    _streamingPlayer->open(_streamingMedia);
+//    _streamingPlayer->play();
+
+    _media = new VlcMedia("screen://", _instance);
     _player->open(_media);
-    _player->play();
 
-    _streamingMedia = new VlcMedia(_media->core());
-
-    codec = "#transcode{vcodec=h264,vb=2000,venc=x264{profile=baseline},width=1280,height=720,acodec=mp3,ab=192,channels=2,samplerate=44100}";
-    QString options = ":sout=" + codec + ":http{mux=ffmpeg{mux=flv},dst=:8088/ch1}";
-    _streamingMedia->setOption(options);
-    _streamingPlayer->open(_streamingMedia);
-
-    parent_ui->connect_to_ver_button->setEnabled(true);
-//    parent_ui->stop_streaming_button->setEnabled(true);
-//    parent_ui->start_streaming_button->setEnabled(false);
-//    parent_ui->comboBox_coding->setEnabled(false);
-//    parent_ui->checkBox__enable_coding->setEnabled(false);
-//    parent_ui->pause_streaming_button->setEnabled(true);
+    parent_ui->connect_to_ver_button_web->setEnabled(true);
+    parent_ui->stop_streaming_button_web->setEnabled(true);
+    parent_ui->start_streaming_button_web->setEnabled(false);
+    parent_ui->comboBox_coding_web->setEnabled(false);
+    parent_ui->checkBox__enable_coding_web->setEnabled(false);
+    parent_ui->pause_streaming_button_web->setEnabled(true);
 }
